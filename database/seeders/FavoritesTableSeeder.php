@@ -7,13 +7,16 @@ use App\Models\Favorite;
 
 class FavoritesTableSeeder extends Seeder
 {
-    public function run(): void
+    public function run()
     {
-        for ($i = 1; $i <= 10; $i++) {
-            Favorite::create([
-                'user_id' => rand(2, 6),
-                'book_id' => rand(1, 10),
-            ]);
-        }
+        Favorite::create([
+            'user_id' => 1, // ID pengguna
+            'book_id' => 1, // ID buku yang difavoritkan
+        ]);
+
+        Favorite::create([
+            'user_id' => 2,
+            'book_id' => 2,
+        ]);
     }
 }

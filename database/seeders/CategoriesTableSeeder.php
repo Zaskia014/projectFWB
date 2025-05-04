@@ -7,12 +7,21 @@ use App\Models\Category;
 
 class CategoriesTableSeeder extends Seeder
 {
-    public function run(): void
+    public function run()
     {
-        $categories = ['Novel', 'Teknologi', 'Sejarah', 'Komik', 'Biografi'];
+        Category::create([
+            'name' => 'Fiction',
+            'description' => 'Books that contain stories created from the imagination.'
+        ]);
 
-        foreach ($categories as $category) {
-            Category::create(['name' => $category]);
-        }
+        Category::create([
+            'name' => 'Non-Fiction',
+            'description' => 'Books that are based on real facts and events.'
+        ]);
+
+        Category::create([
+            'name' => 'Science',
+            'description' => 'Books related to scientific concepts and discoveries.'
+        ]);
     }
 }

@@ -7,13 +7,18 @@ use App\Models\Log;
 
 class LogsTableSeeder extends Seeder
 {
-    public function run(): void
+    public function run()
     {
-        for ($i = 1; $i <= 10; $i++) {
-            Log::create([
-                'activity' => "User melakukan aktivitas ke-$i",
-                'user_id' => rand(2, 6),
-            ]);
-        }
+        Log::create([
+            'user_id' => 1,
+            'action' => 'Login',
+            'timestamp' => now(),
+        ]);
+
+        Log::create([
+            'user_id' => 2,
+            'action' => 'Added Book to Favorites',
+            'timestamp' => now(),
+        ]);
     }
 }

@@ -7,15 +7,20 @@ use App\Models\BookReview;
 
 class BookReviewsTableSeeder extends Seeder
 {
-    public function run(): void
+    public function run()
     {
-        for ($i = 1; $i <= 10; $i++) {
-            BookReview::create([
-                'user_id' => rand(2, 6), // 1 adalah admin
-                'book_id' => rand(1, 10),
-                'rating' => rand(3, 5),
-                'comment' => "Review ke-$i sangat bagus.",
-            ]);
-        }
+        BookReview::create([
+            'book_id' => 1, // ID buku
+            'user_id' => 1, // ID pengguna
+            'rating' => 5,
+            'review' => 'This book was amazing! A must-read for everyone.',
+        ]);
+
+        BookReview::create([
+            'book_id' => 2,
+            'user_id' => 2,
+            'rating' => 4,
+            'review' => 'Great book, but it could use more examples.',
+        ]);
     }
 }
