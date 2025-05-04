@@ -1,15 +1,14 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+judul : BookNest Katalog Buku Digital
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
 
+Nama : Zaskia
+Nim  : D0223311
+
+
+Framework Web Based
+2025
 
 Katalog Buku Digital
-
 Katalog Buku Digital adalah sebuah aplikasi berbasis web yang memungkinkan pengelolaan koleksi buku digital secara efektif. Sistem ini mendukung tiga jenis role pengguna:
 
 - **Penulis**: Dapat menambahkan, mengedit, dan menghapus buku yang telah mereka unggah.
@@ -28,6 +27,97 @@ Fitur utama dari aplikasi ini termasuk:
 - **Pencarian Buku**: Pengguna dapat mencari buku berdasarkan judul, penulis, atau kategori.
 - **Manajemen Pengguna**: Admin dapat menambah, menghapus, dan mengelola peran pengguna dalam aplikasi.
 - **Role Management**: Penulis, pengguna, dan admin memiliki hak akses yang berbeda sesuai dengan peran mereka.
+
+1. Tabel Users (Pengguna)
+
+| **Field**   | **Tipe Data**                    | **Deskripsi**                                |
+| ----------- | -------------------------------- | -------------------------------------------- |
+| id          | INT AUTO\_INCREMENT              | ID unik untuk setiap pengguna                |
+| name        | VARCHAR(255)                     | Nama pengguna                                |
+| email       | VARCHAR(255) UNIQUE              | Alamat email pengguna                        |
+| password    | VARCHAR(255)                     | Password pengguna (disarankan untuk di-hash) |
+| role        | ENUM('penulis', 'user', 'admin') | Peran pengguna (penulis, user, admin)        |
+| created\_at | TIMESTAMP                        | Waktu saat pengguna dibuat                   |
+| updated\_at | TIMESTAMP                        | Waktu saat pengguna terakhir diperbarui      |
+
+
+2. Tabel Books (Buku)
+Tabel ini menyimpan informasi tentang buku yang ada dalam katalog.
+
+| **Field**       | **Tipe Data**       | **Deskripsi**                            |
+| --------------- | ------------------- | ---------------------------------------- |
+| id              | INT AUTO\_INCREMENT | ID unik untuk setiap buku                |
+| title           | VARCHAR(255)        | Judul buku                               |
+| author\_id      | INT                 | ID penulis (referensi ke tabel `users`)  |
+| genre           | VARCHAR(100)        | Genre atau kategori buku                 |
+| description     | TEXT                | Deskripsi buku                           |
+| cover\_image    | VARCHAR(255)        | URL atau path gambar sampul buku         |
+| published\_year | INT                 | Tahun terbit buku                        |
+| created\_at     | TIMESTAMP           | Waktu saat buku ditambahkan              |
+| updated\_at     | TIMESTAMP           | Waktu saat data buku terakhir diperbarui |
+
+
+3. Tabel book_reviews (Ulasan Buku)
+Menyimpan ulasan yang diberikan oleh pengguna untuk setiap buku.
+
+| **Field**    | **Tipe Data** | **Deskripsi**                                               |
+| ------------ | ------------- | ----------------------------------------------------------- |
+| id           | INT           | ID unik ulasan (Primary Key)                                |
+| book_id      | INT           | ID buku yang diulas (Foreign Key ke `books.id`)             |
+| user_id      | INT           | ID pengguna yang memberi ulasan (Foreign Key ke `users.id`) |
+| rating       | INT           | Rating buku (misalnya, 1-5)                                 |
+| review       | TEXT          | Isi ulasan                                                  |
+| created_at   | TIMESTAMP     | Waktu ulasan dibuat                                         |
+
+
+4. Tabel categories (Kategori)
+Menyimpan kategori untuk buku (misalnya, Fiksi, Non-fiksi, Sains, dll.).
+
+| **Field**     | **Tipe Data** | **Deskripsi**                  |
+| ------------- | ------------- | ------------------------------ |
+| id            | INT           | ID unik kategori (Primary Key) |
+| name          | VARCHAR       | Nama kategori                  |
+| description   | TEXT          | Deskripsi kategori             |
+
+
+5. Tabel favorites (Favorit)
+Menyimpan data buku yang telah ditandai sebagai favorit oleh pengguna.
+
+| **Field** | **Tipe Data** | **Deskripsi**                                                     |
+| --------- | ------------- | ----------------------------------------------------------------- |
+| id        | INT           | ID unik favorit (Primary Key)                                     |
+| user_id   | INT           | ID pengguna yang menandai favorit (Foreign Key ke `users.id`)     |
+| book_id   | INT           | ID buku yang ditandai sebagai favorit (Foreign Key ke `books.id`) |
+
+
+6. Tabel logs (Log Aktivitas)
+Menyimpan log aktivitas pengguna (misalnya, login, pencarian buku, transaksi, dll.).
+
+| **Field**   | **Tipe Data** | **Deskripsi**                                                        |
+| ----------- | ------------- | -------------------------------------------------------------------- |
+| id          | INT           | ID unik log (Primary Key)                                            |
+| user_id     | INT           | ID pengguna yang melakukan aktivitas (Foreign Key ke `users.id`)     |
+| action      | VARCHAR       | Deskripsi tindakan yang dilakukan (misalnya "Login", "Mencari buku") |
+| timestamp   | TIMESTAMP     | Waktu saat aktivitas dilakukan                                       |
+
+
+
+Relasi Antar Tabel:
+1. users → books: One-to-Many. Seorang pengguna (penulis) dapat menulis banyak buku.
+
+2. books → book_reviews: One-to-Many. Setiap buku dapat memiliki banyak ulasan.
+
+3. users → book_reviews: One-to-Many. Setiap pengguna dapat memberikan banyak ulasan.
+
+4. ooks → categories: Many-to-One. Setiap buku dapat memiliki satu kategori, tetapi satu kategori bisa  memiliki banyak buku.
+
+5. users → favorites: One-to-Many. Setiap pengguna dapat menandai banyak buku sebagai favorit.
+
+6. books → favorites: One-to-Many. Setiap buku dapat ditandai favorit oleh banyak pengguna.
+
+7. users → logs: One-to-Many. Setiap pengguna dapat memiliki banyak entri log aktivitas.
+
+
 
 
 
