@@ -1,6 +1,5 @@
 judul : BookNest Katalog Buku Digital
 
-
 Nama : Zaskia
 Nim  : D0223311
 
@@ -91,7 +90,7 @@ Menyimpan data buku yang telah ditandai sebagai favorit oleh pengguna.
 
 
 6. Tabel logs (Log Aktivitas)
-Menyimpan log aktivitas pengguna (misalnya, login, pencarian buku, transaksi, dll.).
+Menyimpan log aktivitas pengguna (misalnya, login, pencarian buku, dll.).
 
 | **Field**   | **Tipe Data** | **Deskripsi**                                                        |
 | ----------- | ------------- | -------------------------------------------------------------------- |
@@ -102,14 +101,14 @@ Menyimpan log aktivitas pengguna (misalnya, login, pencarian buku, transaksi, dl
 
 
 
-Relasi Antar Tabel:
+Relasi Antar Tabel: 
 1. users → books: One-to-Many. Seorang pengguna (penulis) dapat menulis banyak buku.
-
+ 
 2. books → book_reviews: One-to-Many. Setiap buku dapat memiliki banyak ulasan.
 
 3. users → book_reviews: One-to-Many. Setiap pengguna dapat memberikan banyak ulasan.
 
-4. ooks → categories: Many-to-One. Setiap buku dapat memiliki satu kategori, tetapi satu kategori bisa  memiliki banyak buku.
+4. books → categories: Many-to-One. Setiap buku dapat memiliki satu kategori, tetapi satu kategori bisa  memiliki banyak buku.
 
 5. users → favorites: One-to-Many. Setiap pengguna dapat menandai banyak buku sebagai favorit.
 
