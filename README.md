@@ -34,7 +34,7 @@ Fitur utama dari aplikasi ini termasuk:
 | id          | INT AUTO\_INCREMENT              | ID unik untuk setiap pengguna                |
 | name        | VARCHAR(255)                     | Nama pengguna                                |
 | email       | VARCHAR(255) UNIQUE              | Alamat email pengguna                        |
-| password    | VARCHAR(255)                     | Password pengguna (disarankan untuk di-hash) |
+| password    | VARCHAR(255)                     | Password pengguna                            |
 | role        | ENUM('penulis', 'user', 'admin') | Peran pengguna (penulis, user, admin)        |
 | created\_at | TIMESTAMP                        | Waktu saat pengguna dibuat                   |
 | updated\_at | TIMESTAMP                        | Waktu saat pengguna terakhir diperbarui      |
