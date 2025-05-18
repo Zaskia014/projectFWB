@@ -31,89 +31,111 @@ Admin bertanggung jawab atas pengelolaan sistem secara keseluruhan. Mereka dapat
 
 --Struktur Tabel--
 
-1. Tabel Users (Pengguna)
+## Tabel Users (Pengguna)
 
-| **Field**   | **Tipe Data**                    | **Deskripsi**                           |
-| ----------- | -------------------------------- | --------------------------------------- |
-| id          | INT AUTO\_INCREMENT              | ID unik untuk setiap pengguna           |
-| name        | VARCHAR(255)                     | Nama pengguna                           |
-| email       | VARCHAR(255) UNIQUE              | Alamat email pengguna                   |
-| password    | VARCHAR(255)                     | Password pengguna                       |
-| role        | ENUM('penulis', 'user', 'admin') | Peran pengguna (penulis, user, admin)   |
-| created\_at | TIMESTAMP                        | Waktu saat pengguna dibuat              |
-| updated\_at | TIMESTAMP                        | Waktu saat pengguna terakhir diperbarui |
+| **Field**    | **Tipe Data**                        | **Deskripsi**                            |
+|--------------|--------------------------------------|------------------------------------------|
+| `id`         | INT AUTO_INCREMENT PRIMARY KEY       | ID unik untuk setiap pengguna            |
+| `name`       | VARCHAR(255)                         | Nama pengguna                            |
+| `email`      | VARCHAR(255) UNIQUE                  | Alamat email pengguna                    |
+| `password`   | VARCHAR(255)                         | Password pengguna                        |
+| `role`       | ENUM('admin', 'author', 'user')      | Peran pengguna (admin, author, user)     |
+| `created_at` | TIMESTAMP                            | Waktu saat pengguna dibuat               |
+| `updated_at` | TIMESTAMP                            | Waktu saat pengguna terakhir diperbarui  |
 
+---
 
-2. Tabel Books (Buku)
-Tabel ini menyimpan informasi tentang buku yang ada dalam katalog.
+## Tabel categories (Kategori)
 
-| **Field**       | **Tipe Data**       | **Deskripsi**                            |
-| --------------- | ------------------- | ---------------------------------------- |
-| id              | INT AUTO\_INCREMENT | ID unik untuk setiap buku                |
-| title           | VARCHAR(255)        | Judul buku                               |
-| author\_id      | INT                 | ID penulis (referensi ke tabel `users`)  |
-| genre           | VARCHAR(100)        | Genre atau kategori buku                 |
-| description     | TEXT                | Deskripsi buku                           |
-| cover\_image    | VARCHAR(255)        | URL atau path gambar sampul buku         |
-| published\_year | INT                 | Tahun terbit buku                        |
-| created\_at     | TIMESTAMP           | Waktu saat buku ditambahkan              |
-| updated\_at     | TIMESTAMP           | Waktu saat data buku terakhir diperbarui |
+| **Field**    | **Tipe Data**                     | **Deskripsi**                  |
+|--------------|-----------------------------------|--------------------------------|
+| `id`         | INT AUTO_INCREMENT PRIMARY KEY    | ID unik kategori               |
+| `name`       | VARCHAR(255)                      | Nama kategori                  |
+| `created_at` | TIMESTAMP                         | Waktu kategori dibuat          |
+| `updated_at` | TIMESTAMP                         | Waktu kategori diperbarui      |
 
-3. Tabel book_reviews (Ulasan Buku)
-Menyimpan ulasan yang diberikan oleh pengguna untuk setiap buku.
+---
 
-| **Field**   | **Tipe Data** | **Deskripsi**                                               |
-| ----------- | ------------- | ----------------------------------------------------------- |
-| id          | INT           | ID unik ulasan (Primary Key)                                |
-| book\_id    | INT           | ID buku yang diulas (Foreign Key ke `books.id`)             |
-| user\_id    | INT           | ID pengguna yang memberi ulasan (Foreign Key ke `users.id`) |
-| rating      | INT           | Rating buku (misalnya, 1-5)                                 |
-| review      | TEXT          | Isi ulasan                                                  |
-| created\_at | TIMESTAMP     | Waktu ulasan dibuat                                         |
+## Tabel books (Buku)
 
+| **Field**     | **Tipe Data**                     | **Deskripsi**                               |
+|---------------|-----------------------------------|---------------------------------------------|
+| `id`          | INT AUTO_INCREMENT PRIMARY KEY    | ID unik buku                                |
+| `user_id`     | INT                               | ID penulis (Foreign Key ke users.id)        |
+| `category_id` | INT NULLABLE                      | ID kategori (Foreign Key ke categories.id)  | 
+| `title`       | VARCHAR(255)                      | Judul buku                                  |
+| `description` | TEXT                              | Deskripsi buku                              |
+| `cover_image` | VARCHAR(255) NULLABLE             | URL atau path gambar sampul buku            |
+| `created_at`  | TIMESTAMP                         | Waktu buku ditambahkan                      |
+| `updated_at`  | TIMESTAMP                         | Waktu data buku diperbarui                  |
 
-4. Tabel categories (Kategori)
-Menyimpan kategori untuk buku (misalnya, Fiksi, Non-fiksi, Sains, dll.).
+---
 
-| **Field**     | **Tipe Data** | **Deskripsi**                  |
-| ------------- | ------------- | ------------------------------ |
-| id            | INT           | ID unik kategori (Primary Key) |
-| name          | VARCHAR       | Nama kategori                  |
-| description   | TEXT          | Deskripsi kategori             |
+## Tabel book_reviews (Ulasan Buku)
 
+| **Field**    | **Tipe Data**                     | **Deskripsi**                                  |
+|--------------|-----------------------------------|------------------------------------------------|
+| `id`         | INT AUTO_INCREMENT PRIMARY KEY    | ID unik ulasan                                 |
+| `user_id`    | INT                               | ID pengguna (Foreign Key ke users.id)          |
+| `book_id`    | INT                               | ID buku (Foreign Key ke books.id)              |
+| `rating`     | INT                               | Rating buku (misal 1-5)                        |
+| `review`     | TEXT                              | Isi ulasan                                     |
+| `created_at` | TIMESTAMP                         | Waktu ulasan dibuat                            |
+| `updated_at` | TIMESTAMP                         | Waktu ulasan diperbarui                        |
 
-5. Tabel favorites (Favorit)
-Menyimpan data buku yang telah ditandai sebagai favorit oleh pengguna.
+---
 
-| **Field** | **Tipe Data** | **Deskripsi**                                                     |
-| --------- | ------------- | ----------------------------------------------------------------- |
-| id        | INT           | ID unik favorit (Primary Key)                                     |
-| user\_id  | INT           | ID pengguna yang menandai favorit (Foreign Key ke `users.id`)     |
-| book\_id  | INT           | ID buku yang ditandai sebagai favorit (Foreign Key ke `books.id`) |
+## Tabel favorites (Favorit)
 
+| **Field**    | **Tipe Data**                     | **Deskripsi**                                    |
+|--------------|-----------------------------------|--------------------------------------------------|
+| `id`         | INT AUTO_INCREMENT PRIMARY KEY    | ID unik favorit                                  |
+| `user_id`    | INT                               | ID pengguna (Foreign Key ke users.id)            |
+| `book_id`    | INT                               | ID buku (Foreign Key ke books.id)                |
+| `created_at` | TIMESTAMP                         | Waktu favorit ditambahkan                        |
+| `updated_at` | TIMESTAMP                         | Waktu favorit diperbarui                         |
 
+---
 
-6. Tabel logs (Log Aktivitas)
-Menyimpan log aktivitas pengguna (misalnya, login, pencarian buku, dll.).
+## Tabel transactions (Transaksi)
 
-| **Field** | **Tipe Data** | **Deskripsi**                                                        |
-| --------- | ------------- | -------------------------------------------------------------------- |
-| id        | INT           | ID unik log (Primary Key)                                            |
-| user\_id  | INT           | ID pengguna yang melakukan aktivitas (Foreign Key ke `users.id`)     |
-| action    | VARCHAR       | Deskripsi tindakan yang dilakukan (misalnya "Login", "Mencari buku") |
-| timestamp | TIMESTAMP     | Waktu saat aktivitas dilakukan                                       |
+| **Field**           | **Tipe Data**                             | **Deskripsi**                               |
+|---------------------|-------------------------------------------|---------------------------------------------|
+| `id`                | INT AUTO_INCREMENT PRIMARY KEY            | ID unik transaksi                           |
+| `user_id`           | INT                                       | ID pengguna (Foreign Key ke users.id)       |
+| `book_id`           | INT                                       | ID buku (Foreign Key ke books.id)           |
+| `status`            | ENUM('pending', 'completed', 'cancelled') | Status transaksi (default: pending)         |
+| `transaction_date`  | TIMESTAMP                                 | Waktu transaksi (default current timestamp) |
+| `created_at`        | TIMESTAMP                                 | Waktu transaksi dibuat                      |
+| `updated_at`        | TIMESTAMP                                 | Waktu transaksi diperbarui                  |
 
+---
 
-Relasi Antar Tabel: 
+## Penjelasan Relasi Antar Tabel
 
-1. users → books: One-to-Many. Seorang pengguna (penulis) dapat menulis banyak buku.
-2. books → book_reviews: One-to-Many. Setiap buku dapat memiliki banyak ulasan.
-3. users → book_reviews: One-to-Many. Setiap pengguna dapat memberikan banyak ulasan.
-4. books → categories: Many-to-One. Setiap buku dapat memiliki satu kategori, tetapi satu kategori bisa memiliki banyak buku.
-5. users → favorites: One-to-Many. Setiap pengguna dapat menandai banyak buku sebagai favorit.
-6. books → favorites: One-to-Many. Setiap buku dapat ditandai favorit oleh banyak pengguna.
-7. users → logs: One-to-Many. Setiap pengguna dapat memiliki banyak entri log aktivitas.
+1. Relasi antara tabel users dan books — One-to-Many
+Satu pengguna (penulis) bisa menulis banyak buku. Setiap buku hanya punya satu penulis.
 
+2. Relasi antara tabel categories dan books — One-to-Many
+Satu kategori dapat berisi banyak buku. Setiap buku hanya masuk dalam satu kategori.
+
+3. Relasi antara tabel books dan book_reviews — One-to-Many
+Satu buku bisa memiliki banyak ulasan dari berbagai pengguna. Setiap ulasan hanya untuk satu buku.
+
+4. Relasi antara tabel users dan book_reviews — One-to-Many
+Satu pengguna bisa membuat banyak ulasan. Setiap ulasan dibuat oleh satu pengguna.
+
+5. Relasi antara tabel users dan favorites — One-to-Many
+Satu pengguna bisa menandai banyak buku sebagai favorit. Setiap favorit tercatat untuk satu pengguna.
+
+6. Relasi antara tabel books dan favorites — One-to-Many
+Satu buku bisa ditandai sebagai favorit oleh banyak pengguna. Setiap favorit mengacu ke satu buku.
+
+7. Relasi antara tabel users dan transactions — One-to-Many
+Satu pengguna bisa melakukan banyak transaksi pembelian. Setiap transaksi terkait dengan satu pengguna.
+
+8. Relasi antara tabel books dan transactions — One-to-Many
+Satu buku bisa muncul di banyak transaksi pembelian oleh berbagai pengguna. Setiap transaksi hanya melibatkan satu buku.
 
 
 ## License
