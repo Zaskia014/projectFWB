@@ -4,45 +4,38 @@
 
 @section('content')
 <div class="container mt-4">
-    <h2>Edit Ulasan Buku</h2>
-
-    <form method="POST" action="{{ route('admin.reviews.update', $review->id) }}">
-        @csrf
-        @method('PUT')
-
-        <div class="mb-3">
-            <label for="user_id">User</label>
-            <select name="user_id" class="form-control" required>
-                @foreach($users as $user)
-                    <option value="{{ $user->id }}" {{ $review->user_id == $user->id ? 'selected' : '' }}>
-                        {{ $user->name }}
-                    </option>
-                @endforeach
-            </select>
+    <div class="card shadow-sm">
+        <div class="card-header bg-warning text-dark">
+            <h5 class="mb-0"><i class="bi bi-pencil-square me-2"></i>Edit Ulasan Buku</h5>
         </div>
+        <div class="card-body">
 
-        <div class="mb-3">
-            <label for="book_id">Buku</label>
-            <select name="book_id" class="form-control" required>
-                @foreach($books as $book)
-                    <option value="{{ $book->id }}" {{ $review->book_id == $book->id ? 'selected' : '' }}>
-                        {{ $book->title }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
+            {{-- Tampilkan error validasi --}}
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <strong><i class="bi bi-exclamation-triangle me-1"></i>Terjadi kesalahan:</strong>
+                    <ul class="mt-2 mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
-        <div class="mb-3">
-            <label for="rating">Rating</label>
-            <input type="number" name="rating" value="{{ $review->rating }}" min="1" max="5" class="form-control" required>
-        </div>
+            <form method="POST" action="{{ route('admin.reviews.update', $review->id) }}">
+                @csrf
+                @method('PUT')
 
-        <div class="mb-3">
-            <label for="review">Ulasan</label>
-            <textarea name="review" rows="3" class="form-control">{{ $review->review }}</textarea>
-        </div>
+                <div class="mb-3">
+                    <label for="user_id" class="form-label">Pengguna</label>
+                    <select name="user_id" id="user_id" class="form-select" required>
+                        @foreach($users as $user)
+                            <option value="{{ $user->id }}" {{ $review->user_id == $user->id ? 'selected' : '' }}>
+                                {{ $user->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
 
-        <button class="btn btn-success">Simpan Perubahan</button>
-    </form>
-</div>
-@endsection
+                <div class="mb-3">
+                    <label for="book_id" class="form-label">Buku</label>
