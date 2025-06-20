@@ -9,9 +9,12 @@ return new class extends Migration {
     {
         Schema::create('logs', function (Blueprint $table) {
             $table->id();
-            $table->string('activity');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');
+            $table->string('action'); // ← tambahkan baris ini
+            $table->timestamp('timestamp'); // ← pastikan baris ini juga ada
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
