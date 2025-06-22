@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.usermaster')
 
 @section('title', 'Edit Profil')
 

@@ -11,14 +11,20 @@ class RedirectIfAuthenticated
 {
     public function handle(Request $request, Closure $next, ...$guards): Response
     {
-        $guards = empty($guards) ? [null] : $guards;
+        if (Auth::check()) {
+            $role = Auth::user()->role;
 
-        foreach ($guards as $guard) {
-            if (Auth::guard($guard)->check()) {
-                return redirect('/redirect-by-role');
+            switch ($role) {
+                case 'admin':
+                    return redirect()->route('admin.dashboard');
+                case 'author':
+                    return redirect()->route('author.dashboard');
+                case 'user':
+                    return redirect()->route('user.dashboard');
             }
         }
 
+        // ✅ Wajib: Lanjutkan request jika belum login
         return $next($request);
     }
 }

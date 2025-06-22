@@ -1,40 +1,42 @@
-@extends('layouts.usermaster')
+@extends('layouts.master')
 
-@section('title', 'Transaksi Saya')
+@section('title', 'Riwayat Transaksi')
 
 @section('content')
 <div class="container mt-4">
-    <h2>📄 Riwayat Transaksi</h2>
+    <h2 class="mb-4">Riwayat Transaksi Anda</h2>
 
-    @if (session('success'))
+    @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
-    @elseif (session('error'))
-        <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
 
-    @if ($transactions->isEmpty())
-        <div class="alert alert-info">Belum ada transaksi.</div>
+    @if($transactions->isEmpty())
+        <p class="text-muted">Belum ada transaksi.</p>
+        <a href="{{ route('user.books.index') }}" class="btn btn-primary">Beli Buku Sekarang</a>
     @else
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Buku</th>
-                    <th>Harga</th>
-                    <th>Status</th>
-                    <th>Tanggal</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($transactions as $tx)
-                    <tr>
-                        <td>{{ $tx->book->title }}</td>
-                        <td>Rp {{ number_format($tx->total_price, 0, ',', '.') }}</td>
-                        <td><span class="badge bg-success">{{ ucfirst($tx->status) }}</span></td>
-                        <td>{{ $tx->transaction_date->format('d M Y H:i') }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+        @foreach($transactions as $transaction)
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between">
+                    <strong>Transaksi #{{ $transaction->id }}</strong>
+                    <span class="text-muted">{{ $transaction->transaction_date->format('d M Y, H:i') }}</span>
+                </div>
+                <div class="card-body">
+                    <p>Status: <span class="badge bg-info">{{ ucfirst($transaction->status) }}</span></p>
+                    <p>Total: <strong>Rp{{ number_format($transaction->total_price, 0, ',', '.') }}</strong></p>
+
+                    <h6 class="mt-3">Daftar Buku:</h6>
+                    <ul>
+                        @foreach ($transaction->books as $book)
+                            <li>
+                                <strong>{{ $book->title }}</strong> -
+                                Qty: {{ $book->pivot->quantity }},
+                                Harga: Rp{{ number_format($book->pivot->price, 0, ',', '.') }}
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        @endforeach
     @endif
 </div>
 @endsection

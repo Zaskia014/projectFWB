@@ -13,19 +13,15 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-
-            // Foreign keys
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('book_id')->constrained()->onDelete('cascade');
 
-            // Detail transaksi
             $table->string('status')->default('pending'); // pending, success, canceled
             $table->decimal('total_price', 10, 2);
             $table->dateTime('transaction_date');
 
-            // Timestamp Laravel
             $table->timestamps();
         });
+
     }
 
     /**

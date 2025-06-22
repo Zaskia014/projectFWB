@@ -10,42 +10,65 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $fillable = [
-        'name', 'email', 'password', 'role'
-    ];
+    protected $fillable = ['name', 'email', 'password', 'role'];
 
-    // Relasi ke buku yang ditulis
+    /**
+     * Buku yang ditulis oleh user (jika role: author)
+     */
     public function authoredBooks()
     {
         return $this->hasMany(Book::class, 'author_id');
     }
 
-    // Relasi ke ulasan
+    /**
+     * Ulasan buku yang ditulis oleh user
+     */
     public function reviews()
     {
         return $this->hasMany(BookReview::class);
     }
 
-    // Relasi ke tabel pivot favorit
+    /**
+     * Relasi favorit melalui pivot (jika ingin $user->favoriteBooks)
+     */
     public function favoriteBooks()
     {
         return $this->belongsToMany(Book::class, 'favorites');
     }
 
-    // Relasi ke model Favorite
+    /**
+     * Relasi ke model Favorite (jika ingin akses id dan data pivot)
+     */
     public function favorites()
     {
         return $this->hasMany(Favorite::class);
     }
 
-    // ✅ Tambahkan fungsi ini untuk cek apakah user sudah memfavoritkan buku
+    /**
+     * Cek apakah user telah memfavoritkan buku tertentu
+     */
     public function hasFavorited(Book $book)
     {
         return $this->favorites()->where('book_id', $book->id)->exists();
     }
-    public function transactions()
-{
-    return $this->hasMany(Transaction::class);
-}
 
+    /**
+     * Relasi ke transaksi pembelian buku
+     */
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
+    /**
+     * Cek apakah user sudah membeli buku tertentu
+     */
+    public function hasPurchased(Book $book): bool
+    {
+        return $this->transactions()
+            ->whereHas('books', function ($query) use ($book) {
+                $query->where('book_id', $book->id);
+            })
+            ->exists();
+    }
 }

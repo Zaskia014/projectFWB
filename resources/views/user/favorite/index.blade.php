@@ -1,44 +1,37 @@
 @extends('layouts.usermaster')
 
-@section('title', 'Favorit Saya')
+@section('title', 'Buku Favorit')
 
 @section('content')
-<div class="container py-5">
-    <h2 class="mb-4 text-center">💖 Buku Favorit Saya</h2>
+<div class="container mt-4">
+    <h3 class="mb-4">Buku Favorit Saya</h3>
 
-    @if(session('success'))
-        <div class="alert alert-success text-center">{{ session('success') }}</div>
-    @endif
-
-    @if($favorites->isEmpty())
-        <div class="alert alert-info text-center">
-            Kamu belum menyukai buku apa pun. Yuk cari buku menarik di katalog!
-            <br>
-            <a href="{{ url('/dashboard') }}" class="btn btn-outline-primary mt-3">Kembali ke Beranda</a>
-        </div>
-    @else
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            @foreach($favorites as $book)
-                <div class="col">
-                    <div class="card h-100 shadow-sm border-0">
-                        @if($book->cover_image)
-                            <img src="{{ asset('storage/' . $book->cover_image) }}" class="card-img-top" alt="Cover Buku" style="height: 300px; object-fit: cover;">
-                        @else
-                            <img src="https://via.placeholder.com/300x400?text=No+Cover" class="card-img-top" alt="No Cover">
+    @if ($favorites->count())
+        <div class="row">
+            @foreach ($favorites as $fav)
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        @if ($fav->book->cover_image)
+                            <img src="{{ asset('storage/' . $fav->book->cover_image) }}" class="card-img-top" alt="Cover Buku" style="height: 200px; object-fit: cover;">
                         @endif
                         <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">{{ $book->title }}</h5>
-                            <p class="card-text text-muted mb-2">
-                                <i class="bi bi-tags"></i> {{ $book->category->name ?? 'Tanpa Kategori' }}
-                            </p>
-                            <div class="mt-auto">
-                                <a href="{{ route('user.books.show', $book->id) }}" class="btn btn-outline-primary w-100">📖 Lihat Detail</a>
-                            </div>
+                            <h5 class="card-title">{{ $fav->book->title }}</h5>
+                            <p class="card-text">{{ Str::limit($fav->book->description, 100) }}</p>
+
+                            <a href="{{ route('user.books.show', $fav->book->id) }}" class="btn btn-sm btn-primary mb-2">Detail</a>
+                            <form action="{{ route('user.favorites.destroy', $fav->book->id) }}" method="POST" onsubmit="return confirm('Hapus dari favorit?')">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-sm btn-danger w-100">Hapus dari Favorit</button>
+                        </form>
+
                         </div>
                     </div>
                 </div>
             @endforeach
         </div>
+    @else
+        <p class="text-muted">Belum ada buku favorit.</p>
     @endif
 </div>
 @endsection
