@@ -13,7 +13,7 @@ class BookReview extends Model
         'book_id',
         'user_id',
         'rating',
-        'comment',
+        'review', // ✅ sesuai dengan nama kolom di tabel
     ];
 
     public function book()
