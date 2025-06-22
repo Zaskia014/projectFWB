@@ -1,4 +1,4 @@
-{{-- @extends('layouts.master')
+@extends('layouts.usermaster')
 
 @section('title', 'Edit Transaksi')
 
@@ -29,4 +29,4 @@
         <a href="{{ route('transactions.index') }}" class="btn btn-secondary">Batal</a>
     </form>
 </div>
-@endsection --}}
+@endsection

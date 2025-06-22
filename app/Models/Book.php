@@ -14,14 +14,16 @@ class Book extends Model
         'author_id',
         'category_id',
         'description',
-        'cover',
+        'cover_image', 
         'price',
+        'published_date'
     ];
 
     public function author()
     {
         return $this->belongsTo(User::class, 'author_id');
     }
+
     public function category()
     {
         return $this->belongsTo(Category::class);
@@ -36,8 +38,15 @@ class Book extends Model
     {
         return $this->belongsToMany(User::class, 'favorites');
     }
+
     public function averageRating()
-{
-    return $this->reviews()->avg('rating');
-}
+    {
+        return $this->reviews()->avg('rating');
+    }
+
+    // ✅ Tambahkan ini untuk keperluan pengecekan pembelian
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }

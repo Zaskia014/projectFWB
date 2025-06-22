@@ -14,10 +14,9 @@ class BookController extends Controller
     }
     
     public function show($id)
-    {
-        // Ambil data buku beserta relasinya
-        $book = Book::with(['category', 'reviews.user', 'favoritedBy'])->findOrFail($id);
+{
+    $book = Book::with(['author', 'category', 'reviews.user', 'favoritedBy'])->findOrFail($id);
 
-        return view('books.show', compact('book'));
-    }
+    return view('books.show', compact('book'));
+}
 }

@@ -43,4 +43,9 @@ class User extends Authenticatable
     {
         return $this->favorites()->where('book_id', $book->id)->exists();
     }
+    public function transactions()
+{
+    return $this->hasMany(Transaction::class);
+}
+
 }

@@ -11,21 +11,18 @@ use Illuminate\Support\Facades\Storage;
 
 class AuthorBookController extends Controller
 {
-    // 📄 Daftar semua buku milik Author
     public function index()
     {
         $books = Book::where('author_id', Auth::id())->latest()->get();
         return view('author.books.index', compact('books'));
     }
 
-    // ➕ Form tambah buku
     public function create()
     {
         $categories = Category::all();
         return view('author.books.create', compact('categories'));
     }
 
-    // 💾 Simpan buku baru
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -34,6 +31,7 @@ class AuthorBookController extends Controller
             'description' => 'nullable|string',
             'cover' => 'nullable|image|max:2048',
             'published_date' => 'nullable|date',
+            'price' => 'required|numeric|min:0',
         ]);
 
         if ($request->hasFile('cover')) {
@@ -47,14 +45,12 @@ class AuthorBookController extends Controller
         return redirect()->route('author.books.index')->with('success', 'Buku berhasil ditambahkan.');
     }
 
-    // 🔍 Detail buku
     public function show(Book $book)
     {
         $this->authorizeBook($book);
         return view('author.books.show', compact('book'));
     }
 
-    // ✏️ Form edit buku
     public function edit(Book $book)
     {
         $this->authorizeBook($book);
@@ -62,7 +58,6 @@ class AuthorBookController extends Controller
         return view('author.books.edit', compact('book', 'categories'));
     }
 
-    // 💾 Update buku
     public function update(Request $request, Book $book)
     {
         $this->authorizeBook($book);
@@ -73,6 +68,7 @@ class AuthorBookController extends Controller
             'description' => 'nullable|string',
             'cover' => 'nullable|image|max:2048',
             'published_date' => 'nullable|date',
+            'price' => 'required|numeric|min:0',
         ]);
 
         if ($request->hasFile('cover')) {
@@ -87,7 +83,6 @@ class AuthorBookController extends Controller
         return redirect()->route('author.books.index')->with('success', 'Buku berhasil diperbarui.');
     }
 
-    // 🗑️ Hapus buku
     public function destroy(Book $book)
     {
         $this->authorizeBook($book);
@@ -101,17 +96,13 @@ class AuthorBookController extends Controller
         return redirect()->route('author.books.index')->with('success', 'Buku berhasil dihapus.');
     }
 
-    // ⭐ Tampilkan review dari user
     public function showReviews(Book $book)
     {
         $this->authorizeBook($book);
-
         $reviews = $book->reviews()->with('user')->latest()->get();
-
         return view('author.books.reviews', compact('book', 'reviews'));
     }
 
-    // 🔒 Validasi bahwa buku milik author yang sedang login
     protected function authorizeBook(Book $book)
     {
         if ($book->author_id !== Auth::id()) {

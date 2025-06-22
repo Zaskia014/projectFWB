@@ -30,8 +30,27 @@
                         <tr>
                             <td>{{ $i + 1 }}</td>
                             <td>{{ $cat->name }}</td>
-                            <td class="text-center">
+                            <td class="text-center d-flex justify-content-center">
                                 <a href="{{ route('admin.categories.edit', $cat->id) }}" class="btn btn-warning btn-sm me-1">
                                     <i class="bi bi-pencil-square"></i> Edit
                                 </a>
-                                <form action="{{ route('admin.categories.destroy', $cat->id) }}"
+                                <form action="{{ route('admin.categories.destroy', $cat->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="bi bi-trash"></i> Hapus
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="3" class="text-center">Tidak ada kategori.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@endsection

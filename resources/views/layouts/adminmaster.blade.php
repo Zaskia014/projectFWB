@@ -3,113 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Author - @yield('title')</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <title>@yield('title') | Admin - BookNest</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         body {
-            background-color: #f8f9fa;
+            padding-top: 70px;
         }
-
-        .sidebar {
-            height: 100vh;
-            background-color: #343a40;
-            padding-top: 20px;
-        }
-
-        .sidebar .nav-link {
-            color: #ffffff;
-            padding: 12px 20px;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
-
-        .sidebar .nav-link:hover,
-        .sidebar .nav-link.active {
-            background-color: #495057;
-            border-left: 4px solid #ffc107;
-        }
-
-        .sidebar .nav-link i {
-            margin-right: 10px;
-        }
-
-        .sidebar .brand {
+        .navbar-brand {
             font-weight: bold;
-            font-size: 20px;
-        }
-
-        .content {
-            padding: 30px;
-        }
-
-        .logout-button {
-            border: none;
-            width: 100%;
-            text-align: left;
-            color: #ffffff;
-            background-color: transparent;
-            padding: 12px 20px;
-            transition: background-color 0.3s ease;
-        }
-
-        .logout-button:hover {
-            background-color: #dc3545;
-            color: #fff;
-        }
-
-        .logout-button i {
-            margin-right: 10px;
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                height: auto;
-            }
         }
     </style>
 </head>
 <body>
 
-<div class="container-fluid">
-    <div class="row">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ route('admin.books.index') }}">BookNest Admin</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarAdmin" aria-controls="navbarAdmin" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <!-- Sidebar -->
-        <nav class="col-md-2 col-sm-12 sidebar d-flex flex-column justify-content-between">
-            <div>
-                <div class="text-center mb-4">
-                    <a class="navbar-brand text-white brand" href="#">📚 Author Panel</a>
-                </div>
-                <ul class="nav flex-column">
+            <div class="collapse navbar-collapse" id="navbarAdmin">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a href="{{ route('author.dashboard') }}" class="nav-link {{ request()->routeIs('author.dashboard') ? 'active' : '' }}">
-                            <i class="fas fa-home"></i> Dashboard
-                        </a>
+                        <a class="nav-link" href="{{ route('admin.books.index') }}">Buku</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('author.books.index') }}" class="nav-link {{ request()->routeIs('author.books.*') ? 'active' : '' }}">
-                            <i class="fas fa-book"></i> Buku Saya
-                        </a>
+                        <a class="nav-link" href="{{ route('admin.reviews.index') }}">Ulasan</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('admin.categories.index') }}">Kategori</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('admin.users.index') }}">Pengguna</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <span class="navbar-text text-white me-2">
+                            {{ auth()->user()->name ?? 'Admin' }}
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                            @csrf
+                            <button type="submit" class="btn btn-sm btn-outline-light">Logout</button>
+                        </form>
                     </li>
                 </ul>
             </div>
+        </div>
+    </nav>
 
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="logout-button">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </button>
-            </form>
-        </nav>
+    <!-- Konten Halaman -->
+    <main class="container">
+        @yield('content')
+    </main>
 
-        <!-- Main content -->
-        <main class="col-md-10 ms-sm-auto content">
-            <div class="py-3">
-                @yield('content')
-            </div>
-        </main>
-    </div>
-</div>
-
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

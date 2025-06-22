@@ -9,65 +9,54 @@ use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
+    // Tampilkan semua transaksi milik user yang sedang login
     public function index()
     {
-        $transactions = Transaction::where('user_id', Auth::id())->with('book')->get();
+        $transactions = Transaction::where('user_id', Auth::id())->with('book')->latest()->get();
         return view('user.transactions.index', compact('transactions'));
     }
 
-    public function create()
+    // Proses pembelian buku (hanya bisa dilakukan dari detail buku)
+    public function store(Book $book)
     {
-        $books = Book::all();
-        return view('user.transactions.create', compact('books'));
-    }
+        // Cek apakah user sudah pernah membeli buku ini
+        $alreadyBought = Transaction::where('user_id', Auth::id())
+            ->where('book_id', $book->id)
+            ->exists();
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'book_id' => 'required|exists:books,id',
-        ]);
+        if ($alreadyBought) {
+            return redirect()->back()->with('error', 'Kamu sudah membeli buku ini.');
+        }
 
+        // Simpan transaksi
         Transaction::create([
             'user_id' => Auth::id(),
-            'book_id' => $request->book_id,
-            'status' => 'pending', // atau sesuai kebutuhan
+            'book_id' => $book->id,
+            'price'   => $book->price, // optional jika kamu punya kolom harga di transaksi
         ]);
 
-        return redirect()->route('user.transactions.index')->with('success', 'Transaksi berhasil ditambahkan.');
+        return redirect()->route('user.transactions.index')->with('success', 'Buku berhasil dibeli.');
     }
 
+    // Tampilkan detail transaksi (hanya untuk pemiliknya)
     public function show(Transaction $transaction)
     {
-        if ($transaction->user_id !== Auth::id()) abort(403);
+        if ($transaction->user_id !== Auth::id()) {
+            abort(403);
+        }
+
         return view('user.transactions.show', compact('transaction'));
     }
 
-    public function edit(Transaction $transaction)
-    {
-        if ($transaction->user_id !== Auth::id()) abort(403);
-        $books = Book::all();
-        return view('user.transactions.edit', compact('transaction', 'books'));
-    }
-
-    public function update(Request $request, Transaction $transaction)
-    {
-        if ($transaction->user_id !== Auth::id()) abort(403);
-
-        $request->validate([
-            'book_id' => 'required|exists:books,id',
-        ]);
-
-        $transaction->update([
-            'book_id' => $request->book_id,
-        ]);
-
-        return redirect()->route('transactions.index')->with('success', 'Transaksi berhasil diperbarui.');
-    }
-
+    // Hapus transaksi (misalnya pembatalan)
     public function destroy(Transaction $transaction)
     {
-        if ($transaction->user_id !== Auth::id()) abort(403);
+        if ($transaction->user_id !== Auth::id()) {
+            abort(403);
+        }
+
         $transaction->delete();
-        return redirect()->route('transactions.index')->with('success', 'Transaksi berhasil dihapus.');
+
+        return redirect()->route('user.transactions.index')->with('success', 'Transaksi berhasil dibatalkan.');
     }
 }

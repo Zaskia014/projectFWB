@@ -1,5 +1,7 @@
 @extends('layouts.authormaster')
 
+@section('title', 'Edit Buku')
+
 @section('content')
 <div class="container">
     <h3>✏️ Edit Buku</h3>
@@ -45,8 +47,20 @@
             <input type="file" name="cover" class="form-control">
             @if($book->cover_image)
                 <small>Cover saat ini:</small><br>
-                <img src="{{ asset('storage/' . $book->cover_image) }}" width="100" class="mt-2">
+                <img src="{{ asset('storage/' . $book->cover_image) }}" width="120" class="mt-2 rounded">
             @endif
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Tanggal Terbit</label>
+            <input type="date" name="published_date" class="form-control" 
+                   value="{{ old('published_date', $book->published_date ? \Carbon\Carbon::parse($book->published_date)->format('Y-m-d') : '') }}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Harga Buku</label>
+            <input type="number" name="price" class="form-control" 
+                   value="{{ old('price', $book->price) }}" required min="0">
         </div>
 
         <button type="submit" class="btn btn-primary">Perbarui Buku</button>

@@ -1,4 +1,4 @@
-@extends('layouts.authormaster')
+@extends('layouts.master') {{-- Ganti jika ini halaman user --}}
 
 @section('title', 'Daftar Buku')
 
@@ -17,13 +17,14 @@
             @foreach ($books as $book)
                 <div class="col-md-4 mb-4">
                     <div class="card h-100 shadow-sm">
-                        @if($book->cover)
-                            <img src="{{ asset('storage/' . $book->cover) }}" class="card-img-top" alt="Cover Buku">
+                        @if($book->cover_image)
+                            <img src="{{ asset('storage/' . $book->cover_image) }}" class="card-img-top" alt="Cover Buku" style="height: 200px; object-fit: cover;">
                         @endif
                         <div class="card-body">
                             <h5 class="card-title">{{ $book->title }}</h5>
                             <p class="card-text">{{ Str::limit($book->description, 100) }}</p>
-                            {{-- <a href="{{ route('books.show', $book->id) }}" class="btn btn-sm btn-primary">Detail</a> --}}
+                            
+                            <a href="{{ route('user.books.show', $book->id) }}" class="btn btn-sm btn-primary">Detail</a>
 
                             @auth
                                 @if(auth()->user()->id === $book->author_id || auth()->user()->role === 'admin')

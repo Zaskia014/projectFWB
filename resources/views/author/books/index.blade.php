@@ -1,5 +1,7 @@
 @extends('layouts.authormaster')
 
+@section('title', 'Daftar Buku')
+
 @section('content')
 <div class="container mt-4">
     <h3>📚 Daftar Buku Saya</h3>
@@ -11,7 +13,7 @@
 
     @if($books->count())
         <table class="table table-bordered table-striped">
-            <thead>
+            <thead class="table-dark">
                 <tr>
                     <th>Judul</th>
                     <th>Kategori</th>
@@ -27,21 +29,22 @@
                         <td>{{ $book->category->name ?? '-' }}</td>
                         <td>
                             @if($book->cover_image)
-                                <img src="{{ asset('storage/' . $book->cover_image) }}" alt="cover" width="60">
+                                <img src="{{ asset('storage/' . $book->cover_image) }}" alt="cover" width="60" class="rounded shadow">
                             @else
-                                -
+                                <span class="text-muted">-</span>
                             @endif
                         </td>
                         <td>
-                            {{ $book->reviews->count() }} ulasan
-                            <br>
-                            <a href="{{ route('author.books.reviews', $book->id) }}" class="btn btn-sm btn-info mt-1">Lihat Review</a>
+                            {{ $book->reviews->count() }} ulasan <br>
+                            <a href="{{ route('author.books.reviews', $book->id) }}" class="btn btn-sm btn-info mt-1">
+                                Lihat Review
+                            </a>
                         </td>
                         <td>
-                            <a href="{{ route('author.books.show', $book->id) }}" class="btn btn-sm btn-success">Detail</a>
-                            <a href="{{ route('author.books.edit', $book->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                            <a href="{{ route('author.books.show', $book->id) }}" class="btn btn-sm btn-success mb-1">Detail</a>
+                            <a href="{{ route('author.books.edit', $book->id) }}" class="btn btn-sm btn-warning mb-1">Edit</a>
                             <form action="{{ route('author.books.destroy', $book->id) }}" method="POST" class="d-inline"
-                                  onsubmit="return confirm('Yakin ingin hapus buku ini?')">
+                                  onsubmit="return confirm('Yakin ingin menghapus buku ini?')">
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn btn-sm btn-danger">Hapus</button>
@@ -52,7 +55,7 @@
             </tbody>
         </table>
     @else
-        <p>Belum ada buku. Yuk tambah buku sekarang!</p>
+        <div class="alert alert-info">Belum ada buku. Yuk tambah buku sekarang!</div>
     @endif
 </div>
 @endsection
