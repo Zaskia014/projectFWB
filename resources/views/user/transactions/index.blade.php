@@ -1,42 +1,38 @@
-@extends('layouts.master')
+@extends('layouts.usermaster')
 
 @section('title', 'Riwayat Transaksi')
 
 @section('content')
-<div class="container mt-4">
-    <h2 class="mb-4">Riwayat Transaksi Anda</h2>
+<div class="container mt-5">
+    <h3>🧾 Riwayat Transaksi</h3>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    @if($transactions->isEmpty())
-        <p class="text-muted">Belum ada transaksi.</p>
-        <a href="{{ route('user.books.index') }}" class="btn btn-primary">Beli Buku Sekarang</a>
-    @else
-        @foreach($transactions as $transaction)
-            <div class="card mb-4">
-                <div class="card-header d-flex justify-content-between">
-                    <strong>Transaksi #{{ $transaction->id }}</strong>
-                    <span class="text-muted">{{ $transaction->transaction_date->format('d M Y, H:i') }}</span>
-                </div>
-                <div class="card-body">
-                    <p>Status: <span class="badge bg-info">{{ ucfirst($transaction->status) }}</span></p>
-                    <p>Total: <strong>Rp{{ number_format($transaction->total_price, 0, ',', '.') }}</strong></p>
-
-                    <h6 class="mt-3">Daftar Buku:</h6>
-                    <ul>
-                        @foreach ($transaction->books as $book)
-                            <li>
-                                <strong>{{ $book->title }}</strong> -
-                                Qty: {{ $book->pivot->quantity }},
-                                Harga: Rp{{ number_format($book->pivot->price, 0, ',', '.') }}
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-        @endforeach
+    @if(session('error'))
+        <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
+
+    @forelse ($transactions as $trx)
+        <div class="card mb-3 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">{{ $trx->book->title }}</h5>
+                <p class="mb-1"><strong>Harga:</strong> Rp{{ number_format($trx->price, 0, ',', '.') }}</p>
+                <p class="mb-1"><strong>Status:</strong> 
+                    <span class="badge bg-{{ $trx->status === 'success' ? 'success' : 'secondary' }}">
+                        {{ ucfirst($trx->status) }}
+                    </span>
+                </p>
+                <p class="mb-0"><strong>Tanggal:</strong> {{ $trx->formatted_date }}</p>
+            </div>
+        </div>
+    @empty
+        <div class="alert alert-info">Belum ada transaksi yang tercatat.</div>
+    @endforelse
+
+    <div class="mt-4">
+        {{ $transactions->links() }}
+    </div>
 </div>
 @endsection

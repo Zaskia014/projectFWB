@@ -29,13 +29,13 @@ class AuthorBookController extends Controller
             'title' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'description' => 'nullable|string',
-            'cover' => 'nullable|image|max:2048',
+            'cover_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'published_date' => 'nullable|date',
             'price' => 'required|numeric|min:0',
         ]);
 
-        if ($request->hasFile('cover')) {
-            $validated['cover_image'] = $request->file('cover')->store('covers', 'public');
+        if ($request->hasFile('cover_image')) {
+            $validated['cover_image'] = $request->file('cover_image')->store('covers', 'public');
         }
 
         $validated['author_id'] = Auth::id();
@@ -66,16 +66,16 @@ class AuthorBookController extends Controller
             'title' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'description' => 'nullable|string',
-            'cover' => 'nullable|image|max:2048',
+            'cover_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'published_date' => 'nullable|date',
             'price' => 'required|numeric|min:0',
         ]);
 
-        if ($request->hasFile('cover')) {
+        if ($request->hasFile('cover_image')) {
             if ($book->cover_image) {
                 Storage::disk('public')->delete($book->cover_image);
             }
-            $validated['cover_image'] = $request->file('cover')->store('covers', 'public');
+            $validated['cover_image'] = $request->file('cover_image')->store('covers', 'public');
         }
 
         $book->update($validated);

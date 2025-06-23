@@ -2,53 +2,38 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Transaction extends Model
 {
     use HasFactory;
 
-    /**
-     * Atribut yang dapat diisi massal
-     */
     protected $fillable = [
         'user_id',
-        'status',           // contoh: pending, success, canceled
-        'total_price',
+        'book_id',
+        'price',
+        'status',
         'transaction_date',
     ];
 
-    /**
-     * Relasi ke user yang melakukan transaksi
-     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Relasi ke buku yang dibeli dalam transaksi ini (pivot: book_transaction)
-     */
-    public function books()
+    public function book()
     {
-        return $this->belongsToMany(Book::class, 'book_transaction')
-                    ->withPivot('quantity', 'price')
-                    ->withTimestamps();
+        return $this->belongsTo(Book::class);
     }
 
-    /**
-     * Format tanggal transaksi (opsional)
-     */
     public function getFormattedDateAttribute()
     {
-        return \Carbon\Carbon::parse($this->transaction_date)->translatedFormat('d F Y, H:i');
+        return Carbon::parse($this->transaction_date)->translatedFormat('d F Y, H:i');
     }
 
-    /**
-     * Apakah transaksi sukses?
-     */
-    public function isSuccessful()
+    public function isSuccessful(): bool
     {
         return $this->status === 'success';
     }

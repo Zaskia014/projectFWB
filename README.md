@@ -1,5 +1,5 @@
 
-judul : BookNest Katalog Buku Digital – Jelajahi, Baca, dan Dapatkan Buku Favoritmu
+judul : BookNest Katalog Buku Digital – Jelajahi, dan Dapatkan Buku Favoritmu
 
 Nama : Zaskia
 Nim  : D0223311
@@ -9,7 +9,7 @@ Framework Web Based
 2025
 
 Katalog Buku Digital
-Katalog Buku Digital adalah platform berbasis web yang menyediakan koleksi buku digital dengan berbagai genre yang dapat diakses dengan mudah. Aplikasi ini memungkinkan pengguna untuk mencari, membaca, memberi ulasan, serta menandai buku favorit. Sistem ini mendukung tiga jenis role pengguna:
+Katalog Buku Digital adalah platform berbasis web yang menyediakan koleksi buku digital dengan berbagai genre yang dapat diakses dengan mudah. Aplikasi ini memungkinkan pengguna untuk mencari,  memberi ulasan, serta menandai buku favorit. Sistem ini mendukung tiga jenis role pengguna:
 
 - **Penulis**: Dapat menambahkan, mengedit, dan menghapus buku yang mereka unggah.
 - **User**: Pengguna dapat mencari buku, membaca buku, dan memberikan ulasan serta rating.

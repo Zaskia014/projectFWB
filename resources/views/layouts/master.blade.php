@@ -95,7 +95,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('favorites.index') }}">
+                                <a class="nav-link" href="{{ route('user.favorite.index') }}">
                                     <i class="bi bi-heart-fill text-danger"></i> Favorit
                                 </a>
                             </li>
