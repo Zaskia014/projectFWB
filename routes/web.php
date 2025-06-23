@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
-use App\Http\Controllers\User\TransactionController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\Admin\AdminBookController;
 use App\Http\Controllers\Admin\UserController;
@@ -14,7 +13,8 @@ use App\Http\Controllers\Author\AuthorBookController;
 use App\Http\Controllers\User\BookReviewController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\User\TransactionController as UserTransactionController;
+use App\Http\Controllers\TransactionController;
+
 
 // ==========================
 // HALAMAN UTAMA
@@ -77,9 +77,11 @@ Route::prefix('user')->middleware(['auth', 'role:user'])->name('user.')->group(f
     Route::delete('/reviews/{review}', [BookReviewController::class, 'destroy'])->name('reviews.destroy');
 
     // Transaksi
-    
-    Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
+  Route::prefix('user')->middleware(['auth', 'role:user'])->name('user.')->group(function () {
+    Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.daftar');
     Route::post('/books/{book}/buy', [TransactionController::class, 'store'])->name('transactions.store');
+    Route::patch('/transactions/{id}/cancel', [TransactionController::class, 'cancel'])->name('transactions.cancel');
+});
 
     // Profil
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
