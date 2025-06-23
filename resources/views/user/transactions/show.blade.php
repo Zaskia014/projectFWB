@@ -12,11 +12,14 @@
             <p class="card-text">
                 <strong>Nama Pengguna:</strong> {{ $transaction->user->name }}<br>
                 <strong>Status:</strong>
-                <span class="badge bg-{{ $transaction->status === 'pending' ? 'warning' : ($transaction->status === 'canceled' ? 'danger' : 'success') }}">
+                <span class="badge bg-{{ 
+                    $transaction->status === 'pending' ? 'warning' : 
+                    ($transaction->status === 'canceled' ? 'danger' : 'success') 
+                }}">
                     {{ ucfirst($transaction->status) }}
                 </span><br>
-                <strong>Tanggal Transaksi:</strong> {{ $transaction->transaction_date->format('d M Y H:i') }}<br>
-                <strong>Harga:</strong> Rp {{ number_format($transaction->total_price, 0, ',', '.') }}
+                <strong>Tanggal Transaksi:</strong> {{ $transaction->formatted_date }}<br>
+                <strong>Harga:</strong> Rp{{ number_format($transaction->price, 0, ',', '.') }}
             </p>
 
             <div class="mt-4">
