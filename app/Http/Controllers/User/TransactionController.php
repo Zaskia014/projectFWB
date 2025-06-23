@@ -43,7 +43,7 @@ class TransactionController extends Controller
             'transaction_date' => now(),
         ]);
 
-        return redirect()->route('user.transactions.index')->with('success', 'Pembelian berhasil!');
+        return redirect()->route('user.user.transactions.index')->with('success', 'Pembelian berhasil!');
     }
 
     /**

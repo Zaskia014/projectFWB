@@ -67,7 +67,7 @@
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="{{ route('user.books.index') }}"><i class="bi bi-house-door"></i> Beranda</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('user.favorites.index') }}"><i class="bi bi-heart"></i> Favorit</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('user.transactions.index') }}"><i class="bi bi-clock-history"></i> Riwayat</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('user.user.transactions.index') }}"><i class="bi bi-clock-history"></i> Riwayat</a></li>
                 <li class="nav-item ms-2">
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf

@@ -1,4 +1,4 @@
-@extends('layouts.usermaster')
+@extends('layouts.masteruser')
 
 @section('title', 'Riwayat Transaksi')
 
@@ -35,9 +35,9 @@
                     📖 Lihat Buku
                 </a>
 
-                {{-- Batalkan transaksi jika belum sukses atau canceled --}}
+                {{-- Batalkan transaksi jika belum sukses atau belum dibatalkan --}}
                 @if($trx->status !== 'success' && $trx->status !== 'canceled')
-                    <form action="{{ route('user.transactions.cancel', $trx->id) }}" method="POST" class="d-inline">
+                    <form action="{{ route('user.user.transactions.index', $trx->id) }}" method="POST" class="d-inline">
                         @csrf
                         @method('PATCH')
                         <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Yakin ingin membatalkan transaksi ini?')">
@@ -46,7 +46,7 @@
                     </form>
                 @endif
 
-                {{-- Form Ulasan Buku jika belum pernah diulas --}}
+                {{-- Form Ulasan Buku jika transaksi sukses dan user belum pernah mengulas --}}
                 @if($trx->status === 'success' && !$trx->book->reviews->where('user_id', auth()->id())->count())
                     <hr>
                     <form action="{{ route('user.reviews.store') }}" method="POST" class="mt-2">

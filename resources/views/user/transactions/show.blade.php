@@ -1,4 +1,4 @@
-@extends('layouts.usermaster')
+@extends('layouts.masteruser')
 
 @section('title', 'Detail Transaksi')
 
@@ -23,7 +23,7 @@
             </p>
 
             <div class="mt-4">
-                <a href="{{ route('user.transactions.index') }}" class="btn btn-secondary">← Kembali ke Riwayat</a>
+                <a href="{{ route('user.user.transactions.index') }}" class="btn btn-secondary">← Kembali ke Riwayat</a>
             </div>
         </div>
     </div>

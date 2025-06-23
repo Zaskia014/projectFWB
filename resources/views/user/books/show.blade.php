@@ -1,4 +1,4 @@
-@extends('layouts.usermaster')
+@extends('layouts.masteruser')
 
 @section('title', $book->title)
 
@@ -35,7 +35,7 @@
 
                     {{-- 🛒 Beli Buku --}}
                     @if (!$hasBought)
-                        <form action="{{ route('user.transactions.store', $book->id) }}" method="POST" class="d-inline">
+                        <form action="{{ route('user.user.transactions.store', $book->id) }}" method="POST" class="d-inline">
                             @csrf
                             <button type="submit" class="btn btn-primary">🛒 Beli Buku</button>
                         </form>
